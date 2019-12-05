@@ -16,29 +16,33 @@ class Command(BaseCommand):
     
     def handle(self, *args, **options):
         with open(options['csv_file']) as f:
-            reader = csv.reader(f, dialect='excel')
-            for row in reader:
-                question = squirrel.objects.create(
-                        latitude = row[1],
-                        longitude = row[0],
-                        uniqueid = row[2],
-                        shift = row[4],
-                        Date = row[5],
-                        Age = row[7],
-                        furcolor = row[8],
-                        location = row[12],
-                        specificlocation = row[14],
-                        running = row[15],
-                        chasing = row[16],
-                        climbing = row[17],
-                        eating = row[18],
-                        foraging = row[19],
-                        otheractivities = row[20],
-                        kuks = row[21],
-                        quaas = row[22],
-                        moans = row[23],
-                        tailflags = row[24],
-                        tailtwitches = row[25],
-                        approaches = row[26],
-                        indifferent = row[27],
-                        runsfrom = row[28])
+            reader = csv.DictReader(f)
+            data = list(reader)
+            for item in data:
+            #reader = csv.reader(f, dialect='excel')
+            #for row in reader:
+                info = squirrel.objects.create(
+                        latitude = item['Y'],
+                        longitude = item['X'],
+                        uniqueid = item['Unique Squirrel ID'],
+                        shift = item['Shift'],
+                        Date = item['Date'],
+                        Age = item['Age'],
+                        furcolor = item['Primary Fur Color'],
+                        location = item['Location'],
+                        specificlocation = item['Specific Location'],
+                        running = item['Running'],
+                        chasing = item['Chasing'],
+                        climbing = item['Climbing'],
+                        eating = item['Eating'],
+                        foraging = item['Foraging'],
+                        otheractivities = item['Other Activities'],
+                        kuks = item['Kuks'],
+                        quaas = item['Quaas'],
+                        moans = item['Moans'],
+                        tailflags = item['Tail flags'],
+                        tailtwitches = item['Tail twitches'],
+                        approaches = item['Approaches'],
+                        indifferent = item['Indifferent'],
+                        runsfrom = item['Runs from'])
+                info.save()
